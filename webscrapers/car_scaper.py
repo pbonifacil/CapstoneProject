@@ -18,7 +18,8 @@ def scrap_car_specs(links_to_listings):
         dr.get(link)
         try:
             price_comparison = WebDriverWait(dr, 4).until(
-                EC.visibility_of_element_located((By.CSS_SELECTOR, "p.esicnpr2"))).text  # Price comparison is dynamic content and takes some time to load so we need to wait before extracting the element
+                EC.visibility_of_element_located((By.CSS_SELECTOR,
+                                                  "p.esicnpr2"))).text  # Price comparison is dynamic content and takes some time to let it load before extracting the element
         except Exception as e:
             price_comparison = "Não disponível"
 
@@ -32,7 +33,6 @@ def scrap_car_specs(links_to_listings):
         except Exception as e:
             specs['Foto'] = "Não disponível"
         if not soup.find("h3", class_="offer-price__number esicnpr5 ooa-17vk29r er34gjf0"):
-            print("Listing doesn't exist")
             continue
         specs['Preço'] = soup.find("h3", class_="offer-price__number esicnpr5 ooa-17vk29r er34gjf0").text
         specs['Link'] = link
@@ -41,7 +41,8 @@ def scrap_car_specs(links_to_listings):
             specs['Morada'] = soup.find_all("a", class_="eavtgmy0 ooa-1j0jeo9")[2].text
         except Exception as e:
             specs['Morada'] = 'Não disponível'
-        specs['Acessórios'] = [accessory.text for accessory in soup.find_all("p", class_="evccnj10 ooa-1i4y99d er34gjf0")]
+        specs['Acessórios'] = [accessory.text for accessory in
+                               soup.find_all("p", class_="evccnj10 ooa-1i4y99d er34gjf0")]
 
         dataset.append(specs)
         # PROGRESS BAR
@@ -56,6 +57,12 @@ def scrap_car_specs(links_to_listings):
 if __name__ == "__main__":
     with open("listing_links.pkl", "rb") as fa:
         links = pickle.load(fa)
-    data = scrap_car_specs(links)
-    df = pd.DataFrame(data)
-    df.to_csv("car_dataset.csv", encoding='utf-8-sig')
+
+    batch_size = 500
+    for i in range(0, len(links), batch_size):
+        batch_links = links[i:i + batch_size]
+        data = scrap_car_specs(batch_links)
+        df = pd.DataFrame(data)
+        csv_filename = f"car_dataset_{i}_{i + batch_size}.csv"
+        df.to_csv(csv_filename, encoding='utf-8-sig')
+        print(f"Saved {csv_filename}")
