@@ -1,18 +1,48 @@
 import time
 import streamlit as st
-from chat_bot import GPT_Helper, ChatBotGPT
-from util import local_settings
+from chat_bot import CarChatBot
+from bot_settings import bot_settings
 
 
 def initialize() -> None:
     """
     Initialize the app
     """
+    st.set_page_config(layout='centered')
+    page_bg_img = '''
+        <style>
+        [data-testid="ScrollToBottomContainer"] {
+        background-image: url("https://i.imgur.com/1PBP7xR.png");
+        background-size: cover;
+        }
+        .stChatFloatingInputContainer {
+                background-color: rgba(0, 0, 0, 0)
+        }
+        [data-testid="stHeader"] {
+                background-color: rgba(0, 0, 0, 0)
+        }
+        </style>
+        '''
+    st.markdown(page_bg_img, unsafe_allow_html=True)
+
     st.title("AutoMentor")
 
+    with st.expander("Bot Configuration"):
+        st.selectbox(label="Prompt", options=["prompt1", "prompt2"])
+        st.session_state.system_behavior = st.text_area(
+            label="Prompt",
+            value=bot_settings[0]["prompt"]
+        )
+
+    st.sidebar.title("🤖")
+
     if "chatbot" not in st.session_state:
-        gpt = GPT_Helper(OPENAI_API_KEY=local_settings.OPENAI_API_KEY)
-        st.session_state.chatbot = ChatBotGPT(engine=gpt)
+        st.session_state.chatbot = CarChatBot(st.session_state.system_behavior, st.secrets["OPENAI_API_KEY"])
+
+    with st.sidebar:
+        st.markdown(
+            f"ChatBot in use: <font color='cyan'>{st.session_state.chatbot.__str__()}</font>", unsafe_allow_html=True
+        )
 
 
 def display_history_messages():
@@ -30,10 +60,6 @@ def display_user_msg(message: str):
     """
     Display user message in chat message container
     """
-    st.session_state.chatbot.memory.append(
-        {"role": "user", "content": message}
-    )
-
     with st.chat_message("user", avatar="😎"):
         st.markdown(message)
 
@@ -60,34 +86,12 @@ def display_assistant_msg(message: str):
 
         message_placeholder.markdown(full_response)
 
-        st.session_state.chatbot.memory.append(
-            {"role": "assistant", "content": full_response}
-        )
-
 
 # [*]                                                                                            #
 # [*] MAIN                                                                                       #
 # [*]                                                                                            #
 
 if __name__ == "__main__":
-    page_bg_img = '''
-    <style>
-    [data-testid="ScrollToBottomContainer"] {
-    background-image: url("https://images.hdqwalls.com/download/retrowave-car-4k-fr-1920x1080.jpg");
-    background-size: cover;
-    }
-    .stChatFloatingInputContainer {
-            bottom: 20px;
-            background-color: rgba(0, 0, 0, 0)
-    }
-    
-    [data-testid="stHeader"] {
-            bottom: 20px;
-            background-color: rgba(0, 0, 0, 0)
-    }
-    </style>
-    '''
-    st.markdown(page_bg_img, unsafe_allow_html=True)
     initialize()
 
     # [i] Display History #
@@ -103,4 +107,6 @@ if __name__ == "__main__":
 
     # [i] Sidebar #
     with st.sidebar:
-        st.write(st.session_state.chatbot.memory)
+        with st.expander("Information"):
+            st.text("💬 MEMORY")
+            st.write(st.session_state.chatbot.memory)
