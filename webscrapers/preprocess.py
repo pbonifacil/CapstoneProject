@@ -1,5 +1,4 @@
 import pandas as pd
-import unidecode
 from util import get_completion
 
 data = pd.read_csv('car_dataset_unprocessed.csv', index_col=0)
@@ -47,4 +46,4 @@ replace_dict = {col: dict(zip(unique_values[col], eval(response2)[col])) for col
 data = data.replace(replace_dict)
 data.columns = eval(response1)
 
-#data.to_csv('car_dataset.csv')
+data.to_csv('car_dataset.csv')
