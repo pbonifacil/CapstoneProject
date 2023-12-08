@@ -8,7 +8,7 @@ def initialize() -> None:
     """
     Initialize the app
     """
-    st.set_page_config(layout='centered')
+    st.set_page_config(layout='centered', page_title='AutoMentor')
     page_bg_img = '''
         <style>
         [data-testid="ScrollToBottomContainer"] {
@@ -37,7 +37,7 @@ def initialize() -> None:
     st.sidebar.title("🤖")
 
     if "chatbot" not in st.session_state:
-        st.session_state.chatbot = CarChatBot(st.session_state.system_behavior, st.secrets["OPENAI_API_KEY"])
+        st.session_state.chatbot = CarChatBot(st.session_state.system_behavior, st.secrets["OPENAI_API_KEY"])  # put your API key in secrets.toml inside .streamlit folder as OPENAI_API_KEY = "your key here"
 
     with st.sidebar:
         st.markdown(

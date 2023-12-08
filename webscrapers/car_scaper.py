@@ -64,5 +64,9 @@ if __name__ == "__main__":
         data = scrap_car_specs(batch_links)
         df = pd.DataFrame(data)
         csv_filename = f"car_dataset_{i}_{i + batch_size}.csv"
+        df = df[['Anunciante', 'Marca', 'Modelo', 'Versão', 'Combustível', 'Ano',
+                 'Quilómetros', 'Cilindrada', 'Potência', 'Segmento', 'Cor',
+                 'Tipo de Caixa', 'Nº de portas', 'Garantia de Stand (incl. no preço)',
+                 'Condição', 'Foto', 'Preço', 'Link', 'PreçoComparado', 'Morada', 'Consumo Urbano']]
         df.to_csv(csv_filename, encoding='utf-8-sig')
         print(f"Saved {csv_filename}")
