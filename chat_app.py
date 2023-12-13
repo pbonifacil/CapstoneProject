@@ -1,7 +1,9 @@
 import time
 import streamlit as st
-from chat_bot import CarChatBot
-from bot_settings import bot_settings
+from agent import CarDealerChatbot
+from dotenv import load_dotenv, find_dotenv
+
+load_dotenv(find_dotenv())
 
 
 def initialize() -> None:
@@ -27,17 +29,10 @@ def initialize() -> None:
 
     st.title("AutoMentor")
 
-    with st.expander("Bot Configuration"):
-        st.selectbox(label="Prompt", options=["prompt1", "prompt2"])
-        st.session_state.system_behavior = st.text_area(
-            label="Prompt",
-            value=bot_settings[0]["prompt"]
-        )
-
     st.sidebar.title("🤖")
 
     if "chatbot" not in st.session_state:
-        st.session_state.chatbot = CarChatBot(st.session_state.system_behavior, st.secrets["OPENAI_API_KEY"])  # put your API key in secrets.toml inside .streamlit folder as OPENAI_API_KEY = "your key here"
+        st.session_state.chatbot = CarDealerChatbot(path="webscrapers/car_dataset_small.csv")
 
     with st.sidebar:
         st.markdown(
@@ -47,9 +42,15 @@ def initialize() -> None:
 
 def display_history_messages():
     # Display chat messages from history on app rerun
-    for message in st.session_state.chatbot.memory:
-        with st.chat_message(message["role"]):
-            st.markdown(message["content"])
+    for message in st.session_state.chatbot.agent.memory.chat_memory.messages:
+        if message.__class__.__name__ == "AIMessage":
+            role = "assistant"
+            avatar = "🤖"
+        else:
+            role = "user"
+            avatar = "😎"
+        with st.chat_message(role, avatar=avatar):
+            st.markdown(message.content)
 
 
 # [i]                                                                                            #
@@ -79,7 +80,7 @@ def display_assistant_msg(message: str):
         full_response = ""
         for chunk in message.split():
             full_response += chunk + " "
-            time.sleep(0.05)
+            time.sleep(0.02)
 
             # Add a blinking cursor to simulate typing
             message_placeholder.markdown(full_response + "▌")
@@ -103,10 +104,10 @@ if __name__ == "__main__":
         assistant_response = st.session_state.chatbot.generate_response(
             message=prompt
         )
-        display_assistant_msg(message=assistant_response)
+        display_assistant_msg(message=assistant_response['output'])
 
     # [i] Sidebar #
     with st.sidebar:
         with st.expander("Information"):
             st.text("💬 MEMORY")
-            st.write(st.session_state.chatbot.memory)
+            st.write(st.session_state.chatbot.agent.memory.chat_memory.messages)

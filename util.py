@@ -1,5 +1,6 @@
 from streamlit import secrets
 from openai import OpenAI
+from unidecode import unidecode
 
 
 def get_completion(prompt, temperature=0, messages=[], model="gpt-3.5-turbo",
