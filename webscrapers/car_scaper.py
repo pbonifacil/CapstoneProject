@@ -5,8 +5,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from StringProgressBar import progressBar
 import pickle
-import pandas as pd
-import time
+import pandas as pd # pandas library
+import time # time library
 
 
 def scrap_car_specs(links_to_listings):
