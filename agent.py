@@ -31,7 +31,15 @@ def get_chain(path):
     )
 
     df = pd.read_csv(path, index_col=0)
-    template = TEMPLATE.format(dhead=str(list(df.columns)))
+    template = TEMPLATE.format(dcolumns=str(list(df.columns)),
+                               dfadvertiser=str(list(df.Advertiser.unique())),
+                               dfbrand=str(list(df.Brand.unique())),
+                               dffuel=str(list(df.Fuel.unique())),
+                               dfsegment=str(list(df.Segment.unique())),
+                               dfcolor=str(list(df.Color.unique())),
+                               dfgeartype=str(list(df.Gear_Type.unique())),
+                               dfcondition=str(list(df.Condition.unique())),
+                               dfcomparedprice=str(list(df.Compared_Price.unique())))
 
     prompt = ChatPromptTemplate.from_messages(
         [
