@@ -6,6 +6,8 @@ from dotenv import load_dotenv, find_dotenv
 load_dotenv(find_dotenv())
 
 
+# TODO: ML Model used to predict car price
+
 def initialize() -> None:
     """
     Initialize the app
@@ -77,15 +79,12 @@ def display_assistant_msg(message: str):
         message_placeholder = st.empty()
 
         # Simulate stream of response with milliseconds delay
-        full_response = ""
-        for chunk in message.split():
-            full_response += chunk + " "
-            time.sleep(0.02)
-
+        for i in range(len(message)):
+            time.sleep(0.005)
             # Add a blinking cursor to simulate typing
-            message_placeholder.markdown(full_response + "▌")
+            message_placeholder.markdown(message[:i] + "▌")
 
-        message_placeholder.markdown(full_response)
+        message_placeholder.markdown(message)
 
 
 # [*]                                                                                            #
