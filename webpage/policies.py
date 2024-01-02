@@ -64,6 +64,3 @@ def app():
     
         st.markdown('**Typography**')
         st.caption('Our primary typeface, Monospace, is used for headlines, subheadlines, CTA’s, and body text. It works equally well in print and digital applications. Please use Monospace in all communication materials whenever possible.')
-    
-
-
