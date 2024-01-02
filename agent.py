@@ -82,4 +82,4 @@ class CarDealerChatbot:
         return f"🤖 {class_name}."
 
 
-agent = get_chain('webscrapers/car_dataset_small.csv')
+#agent = get_chain('webscrapers/car_dataset_small.csv')
