@@ -1,10 +1,13 @@
 import streamlit as st
 
 def app():
-    st.caption('Policies')
+    st.caption('🧾 | Policies')
+    st.write('---')
 
     page = st.selectbox("For a more detailed view of our policies:", 
                         ["Terms & Policies", "Privacy Policy", "Brand Guidelines"])
+
+    st.write('---')
 
     if page == "Terms & Policies":
         st.subheader('Terms and Policies')
