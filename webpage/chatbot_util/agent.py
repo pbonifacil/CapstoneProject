@@ -68,7 +68,7 @@ def get_chain(path):
     )
 
     agent_executor = AgentExecutor(
-        agent=agent, tools=tools, max_iterations=2, early_stopping_method="generate", verbose=True, memory=memory
+        agent=agent, tools=tools, max_iterations=2, early_stopping_method="generate", verbose=True, memory=memory, handle_parsing_errors=True
     )
     return agent_executor
 
@@ -76,6 +76,7 @@ def get_chain(path):
 class AutoMentorChatbot:
     def __init__(self, path):
         self.agent = get_chain(path)
+        self.chat_history = []
 
     def generate_response(self, message: str):
         return self.agent(message)

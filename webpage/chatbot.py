@@ -6,7 +6,10 @@ import csv
 from langchain.schema import AIMessage
 import os
 from chatbot_util.util import is_valid_api_key
+import re
 
+
+# TODO: Show car info by signal in the message (via index)
 
 def initialize() -> None:
     """
@@ -95,15 +98,10 @@ def check_password():
 
 def display_history_messages():
     # Display chat messages from history on app rerun
-    for message in st.session_state.chatbot.agent.memory.chat_memory.messages:
-        if message.__class__.__name__ == "AIMessage":
-            role = "assistant"
-            avatar = "🤖"
-        else:
-            role = "user"
-            avatar = "😎"
-        with st.chat_message(role, avatar=avatar):
-            st.markdown(message.content)
+    avatar_dict = {'assistant': '🤖', 'user': '😎'}
+    for message in st.session_state.chatbot.chat_history:
+        with st.chat_message(message['role'], avatar=avatar_dict[message['role']]):
+            st.markdown(message['content'])
 
 
 # [i]                                                                                            #
@@ -116,6 +114,7 @@ def display_user_msg(message: str):
     """
     with st.chat_message("user", avatar="😎"):
         st.markdown(message)
+    st.session_state.chatbot.chat_history.append({"role": "user", "content": message})
 
 
 # [i]                                                                                            #
@@ -126,6 +125,7 @@ def display_assistant_msg(message: str):
     """
     Display assistant message
     """
+
     with st.chat_message("assistant", avatar="🤖"):
         message_placeholder = st.empty()
 
@@ -137,13 +137,7 @@ def display_assistant_msg(message: str):
 
         message_placeholder.markdown(message)
 
-
-def display_assistant_image(image_url: str):
-    """
-    Display assistant image
-    """
-    with st.chat_message("assistant", avatar="🤖"):
-        st.image(image_url, width=200)
+    st.session_state.chatbot.chat_history.append({"role": "assistant", "content": message})
 
 
 def greeting():

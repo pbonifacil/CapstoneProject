@@ -23,11 +23,11 @@ It is also very important to limit your query to a maximum of 3 car listings.
 
 Example usage:
 ```
-<question> Can you help me finding a blue car below 50000 euros? </question>
+<user> Can you help me finding a blue car below 50000 euros? </user>
 <query>"df[(df.Color == 'Blue') & (df.Price_EUR < 50000)].sample(1)"</query>
-<answer>Sure! I have some listings of blue cars below 50000 euros for you. Here is 1 of them:
+<assistant>Sure! I have some listings of blue cars below 50000 euros for you. Here is 1 of them:
 
-Car #1120: Mercedes-Benz C 200
+Listing Index #1120: Mercedes-Benz C 200
 - Fuel: Diesel
 - Year: 2018
 - Kilometers: 80440
@@ -38,7 +38,8 @@ Car #1120: Mercedes-Benz C 200
 - Condition: Used
 - Price: 24890 euros
 - Link: [View Listing](https://www.standvirtual.com/carros/anuncio/mercedes-benz-c-200-d-avantgarde-aut-ID8Nz0QJ.html)
-</answer>
+- Photo: [Mercedes-Benz C 200] ...
+</assistant>
 
 <note> Remember to match number of the car to the respective index of the dataframe. </note>
 ```
