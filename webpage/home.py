@@ -3,6 +3,7 @@ import streamlit as st
 def app():
 
     st.caption('🏠 | Home Page')
+    st.write('---')
 
     st.title('AutoMentor')
     st.subheader('The ultimate guide to your dream car!')
