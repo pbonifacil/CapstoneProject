@@ -5,10 +5,13 @@ def app():
     st.write('---')
 
     page = st.selectbox("For a more detailed view of our policies:", 
-                        ["Terms & Policies", "Privacy Policy", "Brand Guidelines"])
+                        ["-", "Terms & Policies", "Privacy Policy", "Brand Guidelines"])
 
     st.write('---')
 
+    if page == "-":
+        st.write(' ')
+    
     if page == "Terms & Policies":
         st.subheader('Terms and Policies')
         st.write('**By using AutoMentor, you agree to the following terms and policies:**')
