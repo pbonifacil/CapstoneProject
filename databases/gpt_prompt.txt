@@ -1,5 +1,0 @@
-Generate a dataframe of fictional customers for our app.
-This app is a chat bot aiming to help customers in finding a used car that they like.
-Please generate fictional customer data.
-register customer username and password too
-customer usernames are their full names in lower case letters + some random numbers
