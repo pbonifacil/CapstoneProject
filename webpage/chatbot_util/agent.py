@@ -73,7 +73,7 @@ def get_chain(path):
     return agent_executor
 
 
-class CarDealerChatbot:
+class AutoMentorChatbot:
     def __init__(self, path):
         self.agent = get_chain(path)
 

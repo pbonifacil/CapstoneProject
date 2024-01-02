@@ -1,14 +1,11 @@
 import time
 import streamlit as st
-from chatbot_util.agent import CarDealerChatbot
-# from dotenv import load_dotenv, find_dotenv
+from chatbot_util.agent import AutoMentorChatbot
 import hmac
 import csv
 from langchain.schema import AIMessage
 import os
-
-
-# load_dotenv(find_dotenv())
+from chatbot_util.util import is_valid_api_key
 
 
 def initialize() -> None:
@@ -30,13 +27,10 @@ def initialize() -> None:
         </style>
         '''
     st.markdown(page_bg_img, unsafe_allow_html=True)
-
     st.title("AutoMentor")
 
-    st.sidebar.title("🤖")
-
     if "chatbot" not in st.session_state:
-        st.session_state.chatbot = CarDealerChatbot(path="chatbot_util/car_dataset.csv")
+        st.session_state.chatbot = AutoMentorChatbot(path="chatbot_util/car_dataset.csv")
 
     with st.sidebar:
         st.markdown(
@@ -68,7 +62,10 @@ def check_password():
             os.environ["OPENAI_API_KEY"] = api_key.lstrip('"').rstrip('"')
 
             if st.form_submit_button("Log in") and username and password and api_key:
-                password_entered()
+                if is_valid_api_key(api_key):
+                    password_entered()
+                else:
+                    st.warning("Invalid API key. Please enter a valid GPT API key.")
             else:
                 st.warning("Please enter all credentials.")
 
@@ -83,8 +80,7 @@ def check_password():
             st.session_state["password_correct"] = True
             st.session_state["full_name"] = user_data[st.session_state["username"]]['Full Name']
             st.session_state["show_login_form"] = False
-            del st.session_state["password"]  # Don't store the username or password.
-            del st.session_state["username"]
+            del st.session_state["password"]  # Don't store the password.
             st.rerun()
         else:
             st.session_state["password_correct"] = False
@@ -142,6 +138,25 @@ def display_assistant_msg(message: str):
         message_placeholder.markdown(message)
 
 
+def display_assistant_image(image_url: str):
+    """
+    Display assistant image
+    """
+    with st.chat_message("assistant", avatar="🤖"):
+        st.image(image_url, width=200)
+
+
+def greeting():
+    """
+    Greeting message
+    """
+    if not st.session_state.chatbot.agent.memory.chat_memory.messages:
+        initial_message = AIMessage(
+            content=f"Greetings {st.session_state['full_name'].split()[0]}! I'm AutoMentor, your dedicated automotive assistant. Whether you're searching for the perfect car listing or looking to appraise the value of a vehicle you're considering selling, I'm here to assist. What can I do for you today?")
+        st.session_state.chatbot.agent.memory.chat_memory.add_message(initial_message)
+        display_assistant_msg(message=initial_message.content)
+
+
 # [*]                                                                                            #
 # [*] MAIN                                                                                       #
 # [*]                                                                                            #
@@ -153,13 +168,7 @@ def app():
 
     initialize()
     display_history_messages()
-
-    # [*] Initial Message #
-    if not st.session_state.chatbot.agent.memory.chat_memory.messages:
-        initial_message = AIMessage(
-            content=f"Hello {st.session_state['full_name'].split()[0]}! I'm AutoMentor, your personal car dealer assistant. How can I help you today?")
-        st.session_state.chatbot.agent.memory.chat_memory.add_message(initial_message)
-        display_assistant_msg(message=initial_message.content)
+    greeting()
 
     if prompt := st.chat_input("Type your request..."):
         # [*] Request & Response #
