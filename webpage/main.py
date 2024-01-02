@@ -35,4 +35,4 @@ class MultiApp:
             policies.app()
         if app == 'Contacts':
             contacts.app()
-    run()            
+    run()
