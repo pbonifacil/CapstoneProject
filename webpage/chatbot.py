@@ -5,11 +5,10 @@ import hmac
 import csv
 from langchain.schema import AIMessage
 import os
-from chatbot_util.util import is_valid_api_key
-import re
+from chatbot_util.util import is_valid_api_key, extract_listing_ids, generate_markdown_table
 
 
-# TODO: Show car info by signal in the message (via index)
+# TODO: Show car info by signal in the message (via index) / add to favorite button
 
 def initialize() -> None:
     """
@@ -125,17 +124,22 @@ def display_assistant_msg(message: str):
     """
     Display assistant message
     """
+    listing_ids, clean_message = extract_listing_ids(message)
 
     with st.chat_message("assistant", avatar="🤖"):
         message_placeholder = st.empty()
 
         # Simulate stream of response with milliseconds delay
-        for i in range(len(message)):
-            time.sleep(0.002)
+        for i in range(len(clean_message)):
+            time.sleep(0.0002)
             # Add a blinking cursor to simulate typing
-            message_placeholder.markdown(message[:i] + "▌")
+            message_placeholder.markdown(clean_message[:i] + "▌")
 
-        message_placeholder.markdown(message)
+        message_placeholder.markdown(clean_message)
+
+        if listing_ids:
+            table = generate_markdown_table(st.session_state.chatbot.agent.tools[0].locals['df'], listing_ids)
+            st.markdown(f"\n\n{table}")
 
     st.session_state.chatbot.chat_history.append({"role": "assistant", "content": message})
 
@@ -156,9 +160,10 @@ def greeting():
 # [*]                                                                                            #
 
 def app():
-    login_successful = check_password()
-    if not login_successful:
-        st.stop()
+    #login_successful = check_password()
+    #if not login_successful:
+        #st.stop()
+    st.session_state['full_name'] = "John Doe"
 
     initialize()
     display_history_messages()
@@ -170,6 +175,7 @@ def app():
         assistant_response = st.session_state.chatbot.generate_response(
             message=prompt
         )
+
         display_assistant_msg(message=assistant_response['output'])
 
     # [i] Sidebar #

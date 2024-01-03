@@ -29,6 +29,7 @@ def get_chain(path):
 
     embedding_model = OpenAIEmbeddings()
     vectorstore = FAISS.load_local("./chatbot_util/car_dataset_small", embedding_model)
+    #vectorstore = FAISS.load_local("car_dataset_small", embedding_model)
     retriever_tool = create_retriever_tool(
         vectorstore.as_retriever(), "car_model_search", "Search for a car model by name"
     )
