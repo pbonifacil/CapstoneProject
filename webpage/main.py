@@ -1,9 +1,8 @@
 import streamlit as st
 from streamlit_option_menu import option_menu  # pip install streamlit-option-menu
-import chatbot
-import contacts
-import home
-import policies
+
+import home, account, chatbot, policies, contacts
+
 
 st.set_page_config(page_title='AutoMentor', page_icon='🏁', layout='wide')
 
@@ -24,14 +23,16 @@ class MultiApp:
         with st.sidebar:
             app = option_menu(
                 menu_title='🚘 AutoMentor 🚘',
-                options=['Home', 'Chatbot', 'Policies', 'Contacts'],
-                icons=['house', 'robot', 'receipt', 'telephone'],
+                options=['Home', 'Account', 'Chatbot', 'Policies', 'Contacts'],
+                icons=['house', 'person', 'robot', 'receipt', 'telephone'],
                 menu_icon=' ',
                 default_index=0
             )
 
         if app == 'Home':
             home.app()
+        if app == 'Account':
+            account.app()
         if app == 'Chatbot':
             chatbot.app()
         if app == 'Policies':
