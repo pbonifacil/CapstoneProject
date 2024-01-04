@@ -35,13 +35,21 @@ def extract_listing_ids(input_string):
 
 def generate_markdown_table(df, index_list):
     # Select rows based on the given indices
-    selected_columns = ['Brand', 'Model', 'Price_EUR', 'Year', 'Kilometers', 'Fuel', 'Gear_Type', 'Condition']
+    selected_columns = ['Brand', 'Model', 'Fuel', 'Year', 'Kilometers', 'Power_hp', 'Color', 'Condition', 'Price_EUR']
     selected_rows = df.loc[index_list][selected_columns]
+    selected_rows.columns = ['Brand', 'Model', 'Fuel', 'Year', 'Kilometers', 'Power (hp)', 'Color', 'Condition',
+                             'Price (€)']
 
     # Convert the selected rows to a Markdown table
     markdown_table = selected_rows.to_markdown()
 
-    return markdown_table
+    # Merge 'Brand' and 'Model' into a single column 'Car' in the photo DataFrame
+    photo_df = df.loc[index_list][['Brand', 'Model', 'Photo']]
+    photo_df['Car'] = '#' + photo_df.index.astype(str) + ' ' + photo_df['Brand'] + ' ' + photo_df['Model']
+
+    photo_df = photo_df[['Car', 'Photo']].reset_index(drop=True)
+
+    return markdown_table, photo_df
 
 
 def format_assistant_response(input_string, df):

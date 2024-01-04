@@ -8,7 +8,7 @@ import os
 from chatbot_util.util import is_valid_api_key, extract_listing_ids, generate_markdown_table
 
 
-# TODO: Show car info by signal in the message (via index) / add to favorite button
+# TODO: favorites table and button / account info page
 
 def initialize() -> None:
     """
@@ -81,15 +81,14 @@ def check_password():
         ):
             st.session_state["password_correct"] = True
             st.session_state["full_name"] = user_data[st.session_state["username"]]['Full Name']
-            st.session_state["show_login_form"] = False
+            st.session_state["logged_in"] = True
             del st.session_state["password"]  # Don't store the password.
             st.rerun()
         else:
             st.session_state["password_correct"] = False
             st.error("😕 User not known or password incorrect")
 
-    if st.session_state.get("show_login_form", True):
-        login_form()
+    login_form()
 
     # Return True if the username + password is validated, otherwise False.
     return st.session_state.get("password_correct", False)
@@ -99,8 +98,31 @@ def display_history_messages():
     # Display chat messages from history on app rerun
     avatar_dict = {'assistant': '🤖', 'user': '😎'}
     for message in st.session_state.chatbot.chat_history:
-        with st.chat_message(message['role'], avatar=avatar_dict[message['role']]):
-            st.markdown(message['content'])
+        if message['role'] == 'assistant':
+            listing_ids, clean_message = extract_listing_ids(message['content'])
+            with st.chat_message(message['role'], avatar=avatar_dict[message['role']]):
+                st.markdown(clean_message)
+                if listing_ids:
+                    table, photo_df = generate_markdown_table(st.session_state.chatbot.agent.tools[0].locals['df'],
+                                                              listing_ids)
+                    st.markdown(f"\n\n{table}")
+                    st.markdown("")
+                    st.markdown("\n\nHere are the corresponding photos:\n\n")
+                    num_images = len(photo_df)
+                    columns = st.columns(5)
+                    for i in range(num_images):
+                        with columns[i]:
+                            if photo_df['Photo'][i] == 'Não disponível':
+                                st.markdown(f"\n\n🚫 Photo not available\n\n\n{photo_df['Car'][i]}")
+                                continue
+                            st.image(photo_df['Photo'][i], caption=photo_df['Car'][i], width=200)
+
+                    st.markdown("")
+                    st.markdown(
+                        "If you would like more information about a particular car, please specify the corresponding car number 😊.")
+        else:
+            with st.chat_message(message['role'], avatar=avatar_dict[message['role']]):
+                st.markdown(message['content'])
 
 
 # [i]                                                                                            #
@@ -120,6 +142,21 @@ def display_user_msg(message: str):
 # [i] Display User Message                                                                       #
 # [i]                                                                                            #
 
+def simulate_typing(message: str):
+    """
+    Simulate typing
+    """
+    message_placeholder = st.empty()
+
+    # Simulate stream of response with milliseconds delay
+    for i in range(len(message)):
+        time.sleep(0.005)
+        # Add a blinking cursor to simulate typing
+        message_placeholder.markdown(message[:i] + "▌")
+
+    message_placeholder.markdown(message)
+
+
 def display_assistant_msg(message: str):
     """
     Display assistant message
@@ -127,19 +164,26 @@ def display_assistant_msg(message: str):
     listing_ids, clean_message = extract_listing_ids(message)
 
     with st.chat_message("assistant", avatar="🤖"):
-        message_placeholder = st.empty()
-
-        # Simulate stream of response with milliseconds delay
-        for i in range(len(clean_message)):
-            time.sleep(0.0002)
-            # Add a blinking cursor to simulate typing
-            message_placeholder.markdown(clean_message[:i] + "▌")
-
-        message_placeholder.markdown(clean_message)
+        simulate_typing(clean_message)
 
         if listing_ids:
-            table = generate_markdown_table(st.session_state.chatbot.agent.tools[0].locals['df'], listing_ids)
+            table, photo_df = generate_markdown_table(st.session_state.chatbot.agent.tools[0].locals['df'], listing_ids)
             st.markdown(f"\n\n{table}")
+            st.markdown("")
+            st.markdown("\n\nHere are the corresponding photos:\n\n")
+            num_images = len(photo_df)
+            columns = st.columns(5)
+            for i in range(num_images):
+                with columns[i]:
+                    if photo_df['Photo'][i] == 'Não disponível':
+                        st.markdown(f"\n\n🚫 Photo not available\n\n\n{photo_df['Car'][i]}")
+                        continue
+                    st.image(photo_df['Photo'][i], caption=photo_df['Car'][i], width=200)
+
+            st.markdown("")
+            more_info = "If you would like more information about a particular car, please specify the corresponding car number 😊."
+            simulate_typing(more_info)
+            message += more_info
 
     st.session_state.chatbot.chat_history.append({"role": "assistant", "content": message})
 
@@ -148,11 +192,10 @@ def greeting():
     """
     Greeting message
     """
-    if not st.session_state.chatbot.agent.memory.chat_memory.messages:
-        initial_message = AIMessage(
-            content=f"Greetings {st.session_state['full_name'].split()[0]}! I'm AutoMentor, your dedicated automotive assistant. Whether you're searching for the perfect car listing or looking to appraise the value of a vehicle you're considering selling, I'm here to assist. What can I do for you today?")
-        st.session_state.chatbot.agent.memory.chat_memory.add_message(initial_message)
-        display_assistant_msg(message=initial_message.content)
+    if not st.session_state.chatbot.chat_history:
+        greeting = f"Greetings {st.session_state['full_name'].split()[0]}! I'm AutoMentor, your dedicated automotive assistant. Whether you're searching for the perfect car listing or looking to appraise the value of a vehicle you're considering selling, I'm here to assist. What can I do for you today?"
+        st.session_state.chatbot.chat_history.append({"role": "assistant", "content": greeting})
+        display_assistant_msg(message=greeting)
 
 
 # [*]                                                                                            #
@@ -160,10 +203,12 @@ def greeting():
 # [*]                                                                                            #
 
 def app():
-    #login_successful = check_password()
-    #if not login_successful:
-        #st.stop()
-    st.session_state['full_name'] = "John Doe"
+    # [i] Login #
+    if not st.session_state.get("logged_in", False):
+        login_successful = check_password()
+        if not login_successful:
+            st.stop()
+    #st.session_state['full_name'] = "John Doe"
 
     initialize()
     display_history_messages()
@@ -176,10 +221,10 @@ def app():
             message=prompt
         )
 
-        display_assistant_msg(message=assistant_response['output'])
+        display_assistant_msg(message=assistant_response)
 
     # [i] Sidebar #
     with st.sidebar:
         with st.expander("Information"):
             st.text("💬 MEMORY")
-            st.write(st.session_state.chatbot.agent.memory.chat_memory.messages)
+            st.write(st.session_state.chatbot.chat_history)
