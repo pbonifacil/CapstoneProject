@@ -6,7 +6,7 @@ from unidecode import unidecode
 data = pd.read_csv('car_dataset_unprocessed.csv', index_col=0)
 selected_cols = ['Anunciante', 'Marca', 'Modelo', 'Versão', 'Combustível', 'Ano',
              'Quilómetros', 'Cilindrada', 'Potência', 'Segmento', 'Cor',
-             'Tipo de Caixa', 'Nº de portas', 'Garantia de Stand (incl. no preço)',
+             'Tipo de Caixa', 'Nº de portas','Lotação', 'Garantia de Stand (incl. no preço)',
              'Condição', 'Foto', 'Preço', 'Link', 'PreçoComparado', 'Morada', 'Consumo Urbano']
 data = data[selected_cols]
 
@@ -23,6 +23,8 @@ data.rename({'Garantia de Stand (incl. no preço)': 'Garantia de Stand (meses)'}
 data['Preço'] = data['Preço'].str.replace(' ', '').astype('Int32')
 data.rename({'Preço': 'Preço (€)'}, axis=1, inplace=True)
 data['Ano'] = data['Ano'].astype('Int32')
+data.rename({'Lotação': 'Seats'}, axis=1, inplace=True)
+data['Seats'] = data['Seats'].astype('Int32')
 
 cleaned_cols = [(re.sub(r'[^a-zA-Z0-9\s]', '', unidecode(col))).replace(' ', '_') for col in data.columns]
 cleaned_cols[-3] = 'Preco_Comparado'
