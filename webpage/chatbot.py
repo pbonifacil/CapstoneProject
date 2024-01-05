@@ -5,7 +5,7 @@ from chatbot_util.login import login_signup
 from chatbot_util.util import extract_listing_ids, generate_markdown_table
 
 
-# TODO: favorites table and button / account info page / vector database
+# TODO: vector database / integrate predictor
 
 def initialize() -> None:
     """
