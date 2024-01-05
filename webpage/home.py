@@ -7,20 +7,23 @@ def app():
 
     st.title('AutoMentor')
     st.subheader('The ultimate guide to your dream car!')
-    st.write("AutoMentor is more than just a technology company, it is your personal assistant in the world of cars.")
+    st.write('*AutoMentor is more than just a technology company, it is your personal assistant in the world of cars.*')
 
     st.write('---')
-    st.write('''Whether you are looking for a new or a used car, a sports car or a family car, a diesel or an electric one,
-            AutoMentor will help you find the best match for your needs and preferences. Chat with our friendly and smart bot, and let AutoMentor do the rest!''')
+    st.write('''Welcome to AutoMentor, where convenience meets customization in car shopping.
+             As a car buyer, you can effortlessly input your desired features and preferences, and our innovative Chatbot will instantly curate the most suitable options for you.
+             AutoMentor is designed to make your car shopping experience easy, fast, and enjoyable.''')
     
     st.write('---')
-    st.write('''If you are a car buyer who values convenience and customization, this is the right Chatbot for you.
-             You can simply input your desired features and preferences for a car, and our Chatbot will instantly deliver the most suitable options based on your criteria.
-             Our Chatbot is designed to make car shopping easy and enjoyable for everyone.''')
+    st.write("""But that’s not all, as AutoMentor is also the future of car valuation for sellers.
+             Our intelligent Chatbot can predict your car’s price based on its characteristics, offering a fantastic feature for those looking to sell.
+             It analyzes details such as model, age, and mileage to accurately forecast the potential selling price, empowering you with the knowledge to secure the best deal.""")
     
-    st.write('''AutoMentor is the ultimate solution for busy car buyers who want to find their perfect car in a snap.
-             By scanning various car selling platforms and analyzing the desired features, web reviews, and user feedback,
-             AutoMentor can recommend the best car options for each customer in less than a minute. AutoMentor makes car shopping easy, fast, and fun!''')
+    st.write('---')
+    st.write("""Whether you’re in the market for a new car or selling your current one, AutoMentor is your go-to solution.
+             Embrace the simplicity and efficiency of car shopping and selling with AutoMentor – your partner in navigating the automotive world with confidence and ease.
+             Visit our Chatbot page and experience the AutoMentor difference today!""")
 
     st.write('---')
-    st.write('Create your account to start using AutoMentor! We will need your name, email and location.')
+    st.write('**What are you waiting for?**')
+    st.write('**Create your account and start using AutoMentor!**')
