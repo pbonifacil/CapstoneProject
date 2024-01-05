@@ -27,7 +27,7 @@ class PythonInputs(BaseModel):
     query: str = Field(description="code snippet to run")
 
 
-def get_chain(path):
+def get_chain(path, conversation_preferences='None'):
     pd.set_option("display.max_rows", 20)
     pd.set_option("display.max_columns", 21)
 
@@ -39,7 +39,8 @@ def get_chain(path):
     #)
 
     df = pd.read_csv(path, index_col=0)
-    template = TEMPLATE.format(dcolumns=str(list(df.columns)),
+    template = TEMPLATE.format(conversation_preferences=conversation_preferences,
+                               dcolumns=str(list(df.columns)),
                                dfadvertiser=str(list(df.Advertiser.unique())),
                                dfbrand=str(list(df.Brand.unique())),
                                dffuel=str(list(df.Fuel.unique())),
@@ -89,8 +90,8 @@ def get_chain(path):
 
 
 class AutoMentorChatbot:
-    def __init__(self, path):
-        self.agent = get_chain(path)
+    def __init__(self, path, conversation_preferences='None'):
+        self.agent = get_chain(path, conversation_preferences)
         self.agent_memory = []
         self.chat_history = []
 

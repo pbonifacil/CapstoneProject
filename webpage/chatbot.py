@@ -1,14 +1,11 @@
 import time
 import streamlit as st
 from chatbot_util.agent import AutoMentorChatbot
-import hmac
-import csv
-from langchain.schema import AIMessage
-import os
-from chatbot_util.util import is_valid_api_key, extract_listing_ids, generate_markdown_table
+from chatbot_util.login import login_signup
+from chatbot_util.util import extract_listing_ids, generate_markdown_table
 
 
-# TODO: favorites table and button / account info page
+# TODO: favorites table and button / account info page / vector database
 
 def initialize() -> None:
     """
@@ -32,71 +29,22 @@ def initialize() -> None:
     st.title("AutoMentor")
 
     if "chatbot" not in st.session_state:
-        st.session_state.chatbot = AutoMentorChatbot(path="chatbot_util/car_dataset.csv")
+        st.session_state.chatbot = AutoMentorChatbot(path="chatbot_util/car_dataset.csv",
+                                                     conversation_preferences=st.session_state['user_data'][
+                                                         'Bot Preferences'])
 
     with st.sidebar:
         st.markdown(
             f"ChatBot in use: <font color='cyan'>{st.session_state.chatbot.__str__()}</font>", unsafe_allow_html=True
         )
 
-    st.success(f"👋 Welcome back, {st.session_state['full_name']}!")
-
-
-def check_password():
-    """Returns True if the password is correct, otherwise returns False."""
-
-    def load_user_data(csv_path):
-        """Load user data from a CSV file."""
-        user_data = {}
-        with open(csv_path, "r") as csvfile:
-            reader = csv.DictReader(csvfile)
-            for row in reader:
-                user_data[row['Username']] = {'Password': row['Password'], 'Full Name': row['Full Name']}
-        return user_data
-
-    def login_form():
-        """Form with widgets to collect user information"""
-        with st.form("Credentials"):
-            username = st.text_input("Username", key="username")
-            password = st.text_input("Password", type="password", key="password")
-
-            api_key = st.text_input("Enter your GPT API key", type="password")
-            os.environ["OPENAI_API_KEY"] = api_key.lstrip('"').rstrip('"')
-
-            if st.form_submit_button("Log in") and username and password and api_key:
-                if is_valid_api_key(api_key):
-                    password_entered()
-                else:
-                    st.warning("Invalid API key. Please enter a valid GPT API key.")
-            else:
-                st.warning("Please enter all credentials.")
-
-    def password_entered():
-        """Checks whether a password entered by the user is correct."""
-        user_data = load_user_data(
-            "./chatbot_util/customer_data.csv")  # because we use st.stop, even if this was run outside of check_password, this would always be re-executed if password was incorrect, so I left it here for easier reading
-        if st.session_state["username"] in user_data and hmac.compare_digest(
-                st.session_state["password"],
-                user_data[st.session_state["username"]]['Password'],
-        ):
-            st.session_state["password_correct"] = True
-            st.session_state["full_name"] = user_data[st.session_state["username"]]['Full Name']
-            st.session_state["logged_in"] = True
-            del st.session_state["password"]  # Don't store the password.
-            st.rerun()
-        else:
-            st.session_state["password_correct"] = False
-            st.error("😕 User not known or password incorrect")
-
-    login_form()
-
-    # Return True if the username + password is validated, otherwise False.
-    return st.session_state.get("password_correct", False)
+    st.success(f"👋 Welcome back, {st.session_state['user_data']['Full Name']}!")
 
 
 def display_history_messages():
     # Display chat messages from history on app rerun
     avatar_dict = {'assistant': '🤖', 'user': '😎'}
+    print(st.session_state.chatbot.chat_history)
     for message in st.session_state.chatbot.chat_history:
         if message['role'] == 'assistant':
             listing_ids, clean_message = extract_listing_ids(message['content'])
@@ -192,10 +140,9 @@ def greeting():
     """
     Greeting message
     """
-    if not st.session_state.chatbot.chat_history:
-        greeting = f"Greetings {st.session_state['full_name'].split()[0]}! I'm AutoMentor, your dedicated automotive assistant. Whether you're searching for the perfect car listing or looking to appraise the value of a vehicle you're considering selling, I'm here to assist. What can I do for you today?"
-        st.session_state.chatbot.chat_history.append({"role": "assistant", "content": greeting})
-        display_assistant_msg(message=greeting)
+    greeting = f"Greetings {st.session_state['user_data']['Full Name'].split()[0]}! I'm AutoMentor, your dedicated automotive assistant. Whether you're searching for the perfect car listing or looking to appraise the value of a vehicle you're considering selling, I'm here to assist. What can I do for you today?"
+    st.session_state.chatbot.chat_history.append({"role": "assistant", "content": greeting})
+    display_assistant_msg(message=greeting)
 
 
 # [*]                                                                                            #
@@ -205,14 +152,21 @@ def greeting():
 def app():
     # [i] Login #
     if not st.session_state.get("logged_in", False):
-        login_successful = check_password()
-        if not login_successful:
-            st.stop()
-    #st.session_state['full_name'] = "John Doe"
+        login_signup()
+        st.stop()
+    else:
+        with st.sidebar:
+            st.success("🔓 Logged in as " + st.session_state["user_data"]["Username"])
+
+    # st.session_state['user_data'] = {'Full Name': 'Pedro Bonifacio', 'Age': 22,
+    #                                  'Location': 'Lisbon', 'Favorites': [],
+    #                                  'Bot Preferences': 'Talk like a butler'}
 
     initialize()
     display_history_messages()
-    greeting()
+    if not st.session_state.chatbot.chat_history:
+        st.chat_input("Loading...")
+        greeting()
 
     if prompt := st.chat_input("Type your request..."):
         # [*] Request & Response #

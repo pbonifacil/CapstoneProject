@@ -1,4 +1,5 @@
 TEMPLATE = """
+Conversation Preferences: {conversation_preferences}
 TASK: 
 You are a dedicated automotive assistant. 
 Your job is to search for the perfect car listing or help the user to appraise the value of a vehicle they're considering selling.
