@@ -44,7 +44,6 @@ def initialize() -> None:
 def display_history_messages():
     # Display chat messages from history on app rerun
     avatar_dict = {'assistant': '🤖', 'user': '😎'}
-    print(st.session_state.chatbot.chat_history)
     for message in st.session_state.chatbot.chat_history:
         if message['role'] == 'assistant':
             listing_ids, clean_message = extract_listing_ids(message['content'])
@@ -141,7 +140,6 @@ def greeting():
     Greeting message
     """
     greeting = f"Greetings {st.session_state['user_data']['Full Name'].split()[0]}! I'm AutoMentor, your dedicated automotive assistant. Whether you're searching for the perfect car listing or looking to appraise the value of a vehicle you're considering selling, I'm here to assist. What can I do for you today?"
-    st.session_state.chatbot.chat_history.append({"role": "assistant", "content": greeting})
     display_assistant_msg(message=greeting)
 
 
