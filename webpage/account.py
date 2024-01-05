@@ -4,7 +4,9 @@ import pandas as pd
 
 
 def app():
-    st.title('Account')
+    st.caption('😎 | Account')
+    st.write('---')
+    
     if not st.session_state.get("logged_in", False):
         login_signup()
         st.stop()
