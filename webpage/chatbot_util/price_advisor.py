@@ -1,5 +1,5 @@
 import warnings
-import umap.umap_ as umap
+import umap.umap_ as umap # pip install umap-learn
 import pandas as pd
 from sklearn.neighbors import NearestNeighbors
 from typing import Optional, Type

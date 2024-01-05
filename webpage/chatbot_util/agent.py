@@ -10,12 +10,10 @@ from langchain_experimental.tools import PythonAstREPLTool
 from langchain.vectorstores import FAISS
 from pydantic import BaseModel, Field
 from langchain_core.messages import AIMessage, HumanMessage
-try:
-    from .template import TEMPLATE
-    from .price_advisor import CustomPredictorTool
-except ImportError:
-    from template import TEMPLATE
-    from price_advisor import CustomPredictorTool
+
+from chatbot_util.template import TEMPLATE
+from chatbot_util.price_advisor import CustomPredictorTool
+
 from dotenv import load_dotenv, find_dotenv
 from langchain.tools.convert_to_openai import format_tool_to_openai_function
 from langchain.agents.format_scratchpad import format_to_openai_function_messages
