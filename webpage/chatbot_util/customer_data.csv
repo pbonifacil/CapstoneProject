@@ -1,7 +1,6 @@
-Full Name,Username,Password,Age,Location
-Pedro Bonifacio,abc,abc,22,Lisboa
-John Doe,johndoe849,erLBj,28,Lisboa
-Jane Smith,janesmith616,VsKN6D,35,Porto
-Mike Johnson,mikejohnson538,M2YCe2,42,Coimbra
-Emily Davis,emilydavis546,CzrJsNB,30,Faro
-Chris Brown,chrisbrown435,7g5AhJq,25,Braga
+Email,Full Name,Username,Password,Age,Location,Favorites,Bot Preferences
+johndoe28@gmail.com,John Doe,johndoe759,0IC1g,28,Lisbon,[],Talk like a butler
+janesmith153@gmail.com,Jane Smith,janesmith171,5Yg1BS,35,Porto,[],Talk like Top Gear's Richard Hammond
+mikeoxlong@hotmail.com,Mike Oxlong,abc,abc,42,Coimbra,[],Talk like a car salesman
+emilydavisss@gmail.com,Emily Davis,emilydavis304,6LCC1,30,Faro,[],Talk like Top Gear's Jeremy Clarkson
+chrisbrow76@gmail.com,Chris Brown,chrisbrown428,k2Lxl,25,Braga,[],Talk like a car expert

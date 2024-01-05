@@ -18,12 +18,15 @@ def generate_password():
 
 # Generate fictional customer data
 customer_data = {
-    'Full Name': ['John Doe', 'Jane Smith', 'Mike Johnson', 'Emily Davis', 'Chris Brown'],
+    'Email': ['johndoe28@gmail.com', 'janesmith153@gmail.com', 'mikeoxlong@hotmail.com', 'emilydavisss@gmail.com', 'chrisbrow76@gmail.com'],
+    'Full Name': ['John Doe', 'Jane Smith', 'Mike Oxlong', 'Emily Davis', 'Chris Brown'],
     'Username': [generate_username('John Doe'), generate_username('Jane Smith'), generate_username('Mike Johnson'),
                  generate_username('Emily Davis'), generate_username('Chris Brown')],
     'Password': [generate_password() for _ in range(5)],
     'Age': [28, 35, 42, 30, 25],
     'Location': ['Lisbon', 'Porto', 'Coimbra', 'Faro', 'Braga'],
+    'Favorites': [[] for _ in range(5)],
+    'Bot Preferences': ['Talk like a butler', 'Talk like Top Gear\'s Richard Hammond', 'Talk like a car salesman','Talk like Top Gear\'s Jeremy Clarkson', 'Talk like a car expert']
 }
 
 # Create a DataFrame
