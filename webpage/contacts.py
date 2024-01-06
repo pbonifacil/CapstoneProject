@@ -1,5 +1,6 @@
 import streamlit as st
 
+
 def app():
     st.caption('📞 | Contacts')
     st.write('---')
