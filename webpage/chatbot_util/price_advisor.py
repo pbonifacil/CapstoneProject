@@ -1,5 +1,5 @@
 import warnings
-import umap.umap_ as umap # pip install umap-learn
+import umap.umap_ as umap  # pip install umap-learn
 import pandas as pd
 from sklearn.neighbors import NearestNeighbors
 from typing import Optional, Type
@@ -9,6 +9,7 @@ from langchain.callbacks.manager import (
 )
 from langchain.pydantic_v1 import BaseModel, Field
 from langchain.tools import BaseTool
+from webpage.chatbot_util.util import DATASET_PATH
 
 # Ignore warnings
 warnings.filterwarnings("ignore")
@@ -24,7 +25,7 @@ def predict_price(brand: str,
                   fuel: str,
                   condition: str = "used",
                   ):
-    df = pd.read_csv("./chatbot_util/car_dataset.csv", index_col=0)
+    df = pd.read_csv(DATASET_PATH, index_col=0)
 
     # Fixed values - Forces the model to look for cars with an average price
     compared_price = "The price is within the average."
@@ -44,7 +45,8 @@ def predict_price(brand: str,
     filtered_df = df[(df["Brand"] == brand) & (df["Model"] == model)]
 
     # Select the useful columns to predict the similar price of the car
-    predict_columns = ["Year", "Kilometers", "Displacement_cm3", "Power_hp", "Gear_Type", "Condition", "Fuel", "Compared_Price"]
+    predict_columns = ["Year", "Kilometers", "Displacement_cm3", "Power_hp", "Gear_Type", "Condition", "Fuel",
+                       "Compared_Price"]
 
     # Use the columns to create a umap of the cars
     df_umap = filtered_df[predict_columns]
@@ -58,7 +60,7 @@ def predict_price(brand: str,
     df_umap["Fuel"] = df_umap["Fuel"].str.lower()
 
     # Convert the categorical columns to numerical
-    df_umap = pd.get_dummies(df_umap, columns=["Gear_Type","Fuel", "Condition", "Compared_Price"],
+    df_umap = pd.get_dummies(df_umap, columns=["Gear_Type", "Fuel", "Condition", "Compared_Price"],
                              drop_first=True)
 
     # Create the umap
@@ -94,23 +96,6 @@ def predict_price(brand: str,
         return "We don't have enough data to make a prediction. Sorry for any inconvenience."
 
 
-
-# ## Working example:
-# df = pd.read_csv("car_dataset.csv", index_col=0)
-# avg_price = predict_price(df=df,
-#                           brand="bmw",
-#                           model="520",
-#                           year=2019,
-#                           displacement_cm3=2000,
-#                           power_hp=190,
-#                           gear_type="automatic",
-#                           condition="used",
-#                           kilometers=550000
-#                           )
-#
-# print(f"The predicted price is: {avg_price}€")
-
-
 class PredictorInput(BaseModel):
     brand: str = Field(description="brand of the car")
     model: str = Field(description="model of the car")
@@ -131,7 +116,8 @@ class CustomPredictorTool(BaseTool):
 
     def _run(
             self, brand: str, model: str, year: int, displacement_cm3: int, power_hp: int,
-            gear_type: str, kilometers: int, fuel: str, condition: str, run_manager: Optional[CallbackManagerForToolRun] = None
+            gear_type: str, kilometers: int, fuel: str, condition: str,
+            run_manager: Optional[CallbackManagerForToolRun] = None
     ) -> str:
         """Use the tool."""
         return str(predict_price(brand=brand,
@@ -147,7 +133,8 @@ class CustomPredictorTool(BaseTool):
 
     async def _arun(
             self, brand: str, model: str, year: int, displacement_cm3: int, power_hp: int,
-            gear_type: str, kilometers: int, fuel: str, condition: str, run_manager: Optional[AsyncCallbackManagerForToolRun] = None,
+            gear_type: str, kilometers: int, fuel: str, condition: str,
+            run_manager: Optional[AsyncCallbackManagerForToolRun] = None,
     ) -> str:
         """Use the tool asynchronously."""
         raise NotImplementedError("Predictor does not support async")

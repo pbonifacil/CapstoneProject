@@ -1,6 +1,7 @@
 import streamlit as st
-from chatbot_util.login import login_signup, PATH
+from webpage.chatbot_util.login import login_signup
 import pandas as pd
+from webpage.chatbot_util.util import CUSTOMER_DATA_PATH
 
 
 def app():
@@ -48,7 +49,7 @@ def save_data(user_data, new_password):
     """Save the user data to the CSV file."""
     user_data['Age'] = int(user_data['Age'])
 
-    customer_data = pd.read_csv(PATH)
+    customer_data = pd.read_csv(CUSTOMER_DATA_PATH)
 
     index_to_update = customer_data.index[customer_data['Username'] == st.session_state['user_data']['Username']][0]
 
@@ -67,5 +68,5 @@ def save_data(user_data, new_password):
     customer_data.loc[index_to_update] = old_record
 
     # Save the updated DataFrame to a new CSV file
-    customer_data.to_csv(PATH, index=False)
+    customer_data.to_csv(CUSTOMER_DATA_PATH, index=False)
     del user_data['Password']

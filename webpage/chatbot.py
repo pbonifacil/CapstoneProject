@@ -1,11 +1,13 @@
 import time
 import streamlit as st
-from chatbot_util.agent import AutoMentorChatbot
-from chatbot_util.login import login_signup
-from chatbot_util.util import extract_listing_ids, generate_markdown_table
+from langchain_core.messages import AIMessage
+
+from webpage.chatbot_util.agent import AutoMentorChatbot
+from webpage.chatbot_util.login import login_signup
+from webpage.chatbot_util.util import extract_listing_ids, generate_markdown_table
 
 
-# TODO: vector database / integrate predictor
+# TODO: vector database
 
 def initialize() -> None:
     """
@@ -29,8 +31,7 @@ def initialize() -> None:
     st.title("AutoMentor")
 
     if "chatbot" not in st.session_state:
-        st.session_state.chatbot = AutoMentorChatbot(path="chatbot_util/car_dataset.csv",
-                                                     conversation_preferences=st.session_state['user_data'][
+        st.session_state.chatbot = AutoMentorChatbot(conversation_preferences=st.session_state['user_data'][
                                                          'Bot Preferences'])
 
     with st.sidebar:
@@ -141,6 +142,7 @@ def greeting():
     """
     greeting = f"Greetings {st.session_state['user_data']['Full Name'].split()[0]}! I'm AutoMentor, your dedicated automotive assistant. Whether you're searching for the perfect car listing or looking to appraise the value of a vehicle you're considering selling, I'm here to assist. What can I do for you today?"
     display_assistant_msg(message=greeting)
+    st.session_state.chatbot.agent_memory.append(AIMessage(content=greeting))
 
 
 # [*]                                                                                            #
@@ -179,6 +181,7 @@ def app():
 
     # [i] Sidebar #
     with st.sidebar:
-        with st.expander("Information"):
-            st.text("💬 MEMORY")
+        with st.expander("💬 CHAT HISTORY"):
             st.write(st.session_state.chatbot.chat_history)
+        with st.expander("💬 AGENT MEMORY"):
+            st.write(st.session_state.chatbot.agent_memory)

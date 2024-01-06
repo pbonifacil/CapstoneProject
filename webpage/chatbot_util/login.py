@@ -3,8 +3,7 @@ import hmac
 import os
 from openai import OpenAI, AuthenticationError
 import pandas as pd
-
-PATH = "./chatbot_util/customer_data.csv"
+from webpage.chatbot_util.util import CUSTOMER_DATA_PATH
 
 
 def is_valid_api_key(api_key):
@@ -29,11 +28,12 @@ def login():
         user_data = {}
         credentials = {}
 
-        customer_data = pd.read_csv(PATH)
+        customer_data = pd.read_csv(CUSTOMER_DATA_PATH)
 
         for index, row in customer_data.iterrows():
             credentials[row['Username']] = row['Password']
-            user_data[row['Username']] = {'Email': row['Email'], 'Username': row['Username'], 'Full Name': row['Full Name'], 'Age': row['Age'],
+            user_data[row['Username']] = {'Email': row['Email'], 'Username': row['Username'],
+                                          'Full Name': row['Full Name'], 'Age': row['Age'],
                                           'Location': row['Location'], 'Favorites': row['Favorites'],
                                           'Bot Preferences': row['Bot Preferences']}
 
@@ -109,7 +109,7 @@ def signup():
     def info_submitted(email, username, password, repeat_password, full_name, age, location, bot_preferences):
         """Process the submitted information."""
         # Check if all fields are filled and passwords match
-        customer_data = pd.read_csv(PATH)
+        customer_data = pd.read_csv(CUSTOMER_DATA_PATH)
         if password != repeat_password or len(password) < 5:
             st.error('Passwords do not match or are too short. Please try again.')
         elif username in customer_data['Username'].values:
@@ -126,7 +126,7 @@ def signup():
             customer_data = pd.concat([customer_data, pd.DataFrame([new_row])], ignore_index=True)
 
             # Save the updated DataFrame to the CSV file
-            customer_data.to_csv(PATH, index=False)
+            customer_data.to_csv(CUSTOMER_DATA_PATH, index=False)
 
             st.session_state['signup_successful'] = True
             st.session_state["signing_up"] = False
@@ -144,8 +144,9 @@ def signup():
 
 
 def login_signup():
-    st.markdown('<p style="font-size:20px; font-weight:bold;">Please log in or create an account to start using AutoMentor!</p>', unsafe_allow_html=True)
-
+    st.markdown(
+        '<p style="font-size:20px; font-weight:bold;">Please log in or create an account to start using AutoMentor!</p>',
+        unsafe_allow_html=True)
 
     login_btn_placeholder = st.empty()
     signup_btn_placeholder = st.empty()

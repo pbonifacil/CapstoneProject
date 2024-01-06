@@ -1,5 +1,8 @@
 import re
 
+CUSTOMER_DATA_PATH = "webpage/chatbot_util/customer_data.csv"
+DATASET_PATH = "webpage/chatbot_util/car_dataset.csv"
+
 
 def extract_listing_ids(input_string):
     # Use regular expression to find all numbers inside square brackets

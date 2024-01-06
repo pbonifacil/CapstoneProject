@@ -1,44 +1,38 @@
 import pandas as pd
+from pydantic import BaseModel, Field
 from langchain.agents import AgentExecutor
-from langchain.agents.agent_toolkits.conversational_retrieval.tool import (
-    create_retriever_tool,
-)
+from langchain.agents.agent_toolkits.conversational_retrieval.tool import create_retriever_tool
 from langchain.chat_models import ChatOpenAI
 from langchain.embeddings import OpenAIEmbeddings
 from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_experimental.tools import PythonAstREPLTool
 from langchain.vectorstores import FAISS
-from pydantic import BaseModel, Field
 from langchain_core.messages import AIMessage, HumanMessage
-
-from chatbot_util.template import TEMPLATE
-from chatbot_util.price_advisor import CustomPredictorTool
-
-from dotenv import load_dotenv, find_dotenv
 from langchain.tools.convert_to_openai import format_tool_to_openai_function
 from langchain.agents.format_scratchpad import format_to_openai_function_messages
 from langchain.agents.output_parsers import OpenAIFunctionsAgentOutputParser
 
-
-load_dotenv(find_dotenv())
+from webpage.chatbot_util.template import TEMPLATE
+from webpage.chatbot_util.price_advisor import CustomPredictorTool
+from webpage.chatbot_util.util import DATASET_PATH
 
 
 class PythonInputs(BaseModel):
     query: str = Field(description="code snippet to run")
 
 
-def get_chain(path, conversation_preferences='None'):
+def get_chain(conversation_preferences='None'):
     pd.set_option("display.max_rows", 20)
     pd.set_option("display.max_columns", 21)
 
-    #embedding_model = OpenAIEmbeddings()
-    #vectorstore = FAISS.load_local("./chatbot_util/car_dataset_small", embedding_model) # 4 streamlit exec
-    #vectorstore = FAISS.load_local("car_dataset_small", embedding_model)
-    #retriever_tool = create_retriever_tool(
-     #   vectorstore.as_retriever(), "car_model_search", "Search for a car model by name"
-    #)
+    # embedding_model = OpenAIEmbeddings()
+    # vectorstore = FAISS.load_local("./chatbot_util/car_dataset_small", embedding_model) # 4 streamlit exec
+    # vectorstore = FAISS.load_local("car_dataset_small", embedding_model)
+    # retriever_tool = create_retriever_tool(
+    #   vectorstore.as_retriever(), "car_model_search", "Search for a car model by name"
+    # )
 
-    df = pd.read_csv(path, index_col=0)
+    df = pd.read_csv(DATASET_PATH, index_col=0)
     template = TEMPLATE.format(conversation_preferences=conversation_preferences,
                                dcolumns=str(list(df.columns)),
                                dfadvertiser=str(list(df.Advertiser.unique())),
@@ -65,7 +59,7 @@ def get_chain(path, conversation_preferences='None'):
         description="Runs code and returns the output of the final line",
         args_schema=PythonInputs,
     )
-    #tools = [repl, retriever_tool]
+    # tools = [repl, retriever_tool]
     tools = [repl, CustomPredictorTool()]
 
     llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
@@ -90,8 +84,8 @@ def get_chain(path, conversation_preferences='None'):
 
 
 class AutoMentorChatbot:
-    def __init__(self, path, conversation_preferences='None'):
-        self.agent = get_chain(path, conversation_preferences)
+    def __init__(self, conversation_preferences='None'):
+        self.agent = get_chain(conversation_preferences)
         self.agent_memory = []
         self.chat_history = []
 
@@ -111,5 +105,4 @@ class AutoMentorChatbot:
         class_name = str(type(self)).split('.')[-1].replace("'>", "")
         return f"🤖 {class_name}."
 
-
-#agent = AutoMentorChatbot('car_dataset.csv')
+# agent = AutoMentorChatbot('car_dataset.csv')
