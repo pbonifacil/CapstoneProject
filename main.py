@@ -20,6 +20,17 @@ class MultiApp:
     def run():
 
         with st.sidebar:
+            st.markdown(
+            """
+            <style>
+                section[data-testid="stSidebar"] {
+                    width: 333px !important;
+                }
+            </style>
+            """,
+            unsafe_allow_html=True,
+            )
+
             app = option_menu(
                 menu_title='🚘 AutoMentor 🚘',
                 options=['Home', 'Account', 'Chatbot', 'Policies', 'Contacts'],
