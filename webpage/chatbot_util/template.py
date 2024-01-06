@@ -52,16 +52,16 @@ Only proceed if you have all the information you need to predict the price of th
 
 Example of request message:
 <message>
-Yes, I can appraise your car. To do that, I need the following pieces of information from you, please inform:(newline)
-- a) Brand(newline)
-- b) Model(newline)
-- c) Year(newline)
-- d) Fuel(newline)
-- e) Displacement (cm3)(newline)
-- f) Power (hp)(newline)
-- g) Gear Type(newline)
-- h) Kilometers(newline)
-- i) Condition(newline)
+Yes, I can appraise your car. To do that, I need the following pieces of information from you, please inform:
+- Brand
+- Model
+- Year
+- Fuel
+- Displacement (cm3)
+- Power (hp)
+- Gear Type
+- Kilometers
+- Condition
 </message>
 ```
 """
