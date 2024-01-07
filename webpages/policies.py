@@ -7,9 +7,6 @@ def app():
     page = st.selectbox("For a more detailed view of our policies:", 
                         ["-", "Terms & Policies", "Privacy Policy", "Brand Guidelines"])
 
-
-
-
     if page == "-":
         st.write(' ')
     
@@ -72,4 +69,16 @@ def app():
         st.markdown('**Typography**')
         st.caption('Our primary typeface, Monospace, is used for headlines, subheadlines, CTA’s, and body text. It works equally well in print and digital applications. Please use Monospace in all communication materials whenever possible.')
 
-    st.image(r"https://i.gifer.com/embedded/download/PXAH.gif", width = 250)
+
+
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.write('')
+    with col2:
+        st.image(r"https://media4.giphy.com/media/eh177GCq0nmFTC9aQc/200w.gif?cid=82a1493b62ru62n0j6ocggfqsg2j80pnnrc49l3wyuqnbjjz&ep=v1_gifs_related&rid=200w.gif&ct=s", width = 300)     
+    with col3:
+        st.write('')
+
+
+    st.write("---")
+    st.caption("© 2024 AutoMentor | All rights reserved")

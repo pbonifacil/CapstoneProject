@@ -39,6 +39,9 @@ class MultiApp:
                 default_index=0
             )
 
+            st.image(r"https://sp-ao.shortpixel.ai/client/to_webp,q_glossy,ret_img,w_1150/https://www.st-agnes.manchester.sch.uk/wp-content/uploads/2018/11/car-gif-png-1.gif", width=250)
+
+
         if app == 'Home':
             home.app()
         if app == 'Account':
