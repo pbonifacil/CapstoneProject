@@ -23,7 +23,7 @@ def listing_link_scraper(n_listings, load_data=False):
 
     Note: Ensure you have the geckodriver downloaded and provide the correct path to the executable_path.
     """
-    geckodriver_path = r'.\selenium\geckodriver.exe'
+    geckodriver_path = r'selenium/geckodriver.exe'
     dr = webdriver.Firefox(service=FirefoxService(executable_path=geckodriver_path))  # initialize firefox web driver
     url = "https://www.standvirtual.com/carros?page="  # base url for scraping, just attach the number of the page at the end of the string
     listing_links = []

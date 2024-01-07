@@ -12,9 +12,9 @@ from langchain.tools.convert_to_openai import format_tool_to_openai_function
 from langchain.agents.format_scratchpad import format_to_openai_function_messages
 from langchain.agents.output_parsers import OpenAIFunctionsAgentOutputParser
 
-from webpage.chatbot_util.template import TEMPLATE
-from webpage.chatbot_util.price_advisor import CustomPredictorTool
-from webpage.chatbot_util.util import DATASET_PATH
+from webpages.chatbot_util.template import TEMPLATE
+from webpages.chatbot_util.price_advisor import CustomPredictorTool
+from webpages.chatbot_util.util import DATASET_PATH
 
 
 class PythonInputs(BaseModel):

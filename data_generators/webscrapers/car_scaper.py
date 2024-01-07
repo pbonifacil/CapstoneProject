@@ -10,7 +10,7 @@ import time
 
 
 def scrap_car_specs(links_to_listings):
-    geckodriver_path = r'.\selenium\geckodriver.exe'
+    geckodriver_path = r'selenium/geckodriver.exe'
     dr = webdriver.Firefox(
         service=webdriver.firefox.service.Service(executable_path=geckodriver_path))  # initialize firefox web driver
     dataset = []

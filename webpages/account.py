@@ -1,7 +1,7 @@
 import streamlit as st
-from webpage.chatbot_util.login import login_signup
+from webpages.chatbot_util.login import login_signup
 import pandas as pd
-from webpage.chatbot_util.util import CUSTOMER_DATA_PATH
+from webpages.chatbot_util.util import CUSTOMER_DATA_PATH
 
 
 def app():

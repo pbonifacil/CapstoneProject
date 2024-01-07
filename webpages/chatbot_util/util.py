@@ -1,7 +1,7 @@
 import re
 
-CUSTOMER_DATA_PATH = "webpage/chatbot_util/customer_data.csv"
-DATASET_PATH = "webpage/chatbot_util/car_dataset.csv"
+CUSTOMER_DATA_PATH = "webpages/chatbot_util/customer_data.csv"
+DATASET_PATH = "webpages/chatbot_util/car_dataset.csv"
 
 
 def extract_listing_ids(input_string):
