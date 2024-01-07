@@ -17,3 +17,4 @@ def get_completion(prompt, temperature=0, messages=[], model="gpt-3.5-turbo",
     return completion.choices[0].message.content
 '''
 
+We wrote the rest of the code ourselves because chat gpt was having trouble with pdf formatting.

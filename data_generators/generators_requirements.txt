@@ -7,3 +7,8 @@ openai
 python-dotenv
 random
 fdpf
+PyPDF2
+langchain
+tiktoken
+faiss-cpu
+langchain_openai

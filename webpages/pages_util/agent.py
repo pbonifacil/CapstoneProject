@@ -3,7 +3,7 @@ from pydantic import BaseModel, Field
 from langchain.agents import AgentExecutor
 from langchain.agents.agent_toolkits.conversational_retrieval.tool import create_retriever_tool
 from langchain.chat_models import ChatOpenAI
-from langchain.embeddings import OpenAIEmbeddings
+from langchain_openai import OpenAIEmbeddings
 from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain_experimental.tools import PythonAstREPLTool
 from langchain.vectorstores import FAISS
@@ -25,12 +25,9 @@ def get_chain(conversation_preferences='None'):
     pd.set_option("display.max_rows", 20)
     pd.set_option("display.max_columns", 21)
 
-    # embedding_model = OpenAIEmbeddings()
-    # vectorstore = FAISS.load_local("./pages_util/car_dataset_small", embedding_model) # 4 streamlit exec
-    # vectorstore = FAISS.load_local("car_dataset_small", embedding_model)
-    # retriever_tool = create_retriever_tool(
-    #   vectorstore.as_retriever(), "car_model_search", "Search for a car model by name"
-    # )
+    embedding_model = OpenAIEmbeddings()
+    vectorstore = FAISS.load_local("./webpages/pages_util/FAISS_car_brands_curiosities", embedding_model)
+    retriever_tool = create_retriever_tool(vectorstore.as_retriever(), "brand_info_search", "Search for information about a car brand")
 
     df = pd.read_csv(DATASET_PATH, index_col=0)
     template = TEMPLATE.format(conversation_preferences=conversation_preferences,
@@ -59,8 +56,8 @@ def get_chain(conversation_preferences='None'):
         description="Runs code and returns the output of the final line",
         args_schema=PythonInputs,
     )
-    # tools = [repl, retriever_tool]
-    tools = [repl, CustomPredictorTool()]
+
+    tools = [repl, CustomPredictorTool(), retriever_tool]
 
     llm = ChatOpenAI(model="gpt-3.5-turbo", temperature=0)
     llm_with_tools = llm.bind(functions=[format_tool_to_openai_function(t) for t in tools])
@@ -104,5 +101,3 @@ class AutoMentorChatbot:
     def __str__(self):
         class_name = str(type(self)).split('.')[-1].replace("'>", "")
         return f"🤖 {class_name}."
-
-# agent = AutoMentorChatbot('car_dataset.csv')
