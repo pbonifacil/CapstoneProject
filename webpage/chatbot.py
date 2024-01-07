@@ -98,7 +98,7 @@ def simulate_typing(message: str):
 
     # Simulate stream of response with milliseconds delay
     for i in range(len(message)):
-        time.sleep(0.005)
+        time.sleep(0.02)
         # Add a blinking cursor to simulate typing
         message_placeholder.markdown(message[:i] + "▌")
 
