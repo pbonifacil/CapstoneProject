@@ -1,4 +1,4 @@
-# NOVA IMS 3rd Year - Capstone Project
+# NOVA IMS - Data Science Bachelor's 3rd Year Capstone Project
 
 ## AutoMentor - Steering you toward your dream car
 
