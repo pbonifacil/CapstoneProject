@@ -7,7 +7,8 @@ def app():
     page = st.selectbox("For a more detailed view of our policies:", 
                         ["-", "Terms & Policies", "Privacy Policy", "Brand Guidelines"])
 
-    st.write('---')
+
+
 
     if page == "-":
         st.write(' ')
@@ -70,3 +71,5 @@ def app():
     
         st.markdown('**Typography**')
         st.caption('Our primary typeface, Monospace, is used for headlines, subheadlines, CTA’s, and body text. It works equally well in print and digital applications. Please use Monospace in all communication materials whenever possible.')
+
+    st.image(r"https://i.gifer.com/embedded/download/PXAH.gif", width = 250)

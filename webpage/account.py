@@ -7,7 +7,7 @@ from webpage.chatbot_util.util import CUSTOMER_DATA_PATH
 def app():
     st.caption('😎 | Account')
     st.write('---')
-    
+
     if not st.session_state.get("logged_in", False):
         login_signup()
         st.stop()

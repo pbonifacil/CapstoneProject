@@ -152,6 +152,7 @@ def greeting():
 def app():
     st.caption('🤖 | Chatbot')
     st.write('---')
+
     # [i] Login #
     if not st.session_state.get("logged_in", False):
         login_signup()
