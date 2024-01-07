@@ -65,4 +65,5 @@ Yes, I can appraise your car. To do that, I need the following pieces of informa
 - Condition
 </message>
 ```
+Remember to only proceed if you have all the information you need to predict the price of the car.
 """

@@ -25,54 +25,55 @@ def predict_price(brand: str,
                   fuel: str,
                   condition: str = "used",
                   ):
-    df = pd.read_csv(DATASET_PATH, index_col=0)
-
-    # Fixed values - Forces the model to look for cars with an average price
-    compared_price = "The price is within the average."
-
-    # Convert all str variables to lowercase
-    brand = brand.lower()
-    model = model.lower()
-    gear_type = gear_type.lower()
-    condition = condition.lower()
-    fuel = fuel.lower()
-
-    # Convert the brand and model to lowercase
-    df["Brand"] = df["Brand"].str.lower()
-    df["Model"] = df["Model"].str.lower()
-
-    # Filter the df by brand and model
-    filtered_df = df[(df["Brand"] == brand) & (df["Model"] == model)]
-
-    # Select the useful columns to predict the similar price of the car
-    predict_columns = ["Year", "Kilometers", "Displacement_cm3", "Power_hp", "Gear_Type", "Condition", "Fuel",
-                       "Compared_Price"]
-
-    # Use the columns to create a umap of the cars
-    df_umap = filtered_df[predict_columns]
-
-    df_umap['Displacement_cm3'] = df_umap['Displacement_cm3'].fillna(0)
-
-    # Add the new car to the df
-    df_umap.loc[1000000] = [year, kilometers, displacement_cm3, power_hp, gear_type, condition, fuel, compared_price]
-
-    # Convert the gear type and condition to lowercase
-    df_umap["Gear_Type"] = df_umap["Gear_Type"].str.lower()
-    df_umap["Condition"] = df_umap["Condition"].str.lower()
-    df_umap["Fuel"] = df_umap["Fuel"].str.lower()
-
-    # Convert the categorical columns to numerical
-    df_umap = pd.get_dummies(df_umap, columns=["Gear_Type", "Fuel", "Condition", "Compared_Price"],
-                             drop_first=True)
-
-    # Create the umap
-    reducer = umap.UMAP(n_jobs=-1)
-    embedding = reducer.fit_transform(df_umap)
-
-    # Get the umap embedding of the new car
-    new_car_embedding = embedding[-1]
-
     try:
+        df = pd.read_csv(DATASET_PATH, index_col=0)
+
+        # Fixed values - Forces the model to look for cars with an average price
+        compared_price = "The price is within the average."
+
+        # Convert all str variables to lowercase
+        brand = brand.lower()
+        model = model.lower()
+        gear_type = gear_type.lower()
+        condition = condition.lower()
+        fuel = fuel.lower()
+
+        # Convert the brand and model to lowercase
+        df["Brand"] = df["Brand"].str.lower()
+        df["Model"] = df["Model"].str.lower()
+
+        # Filter the df by brand and model
+        filtered_df = df[(df["Brand"] == brand) & (df["Model"] == model)]
+
+        # Select the useful columns to predict the similar price of the car
+        predict_columns = ["Year", "Kilometers", "Displacement_cm3", "Power_hp", "Gear_Type", "Condition", "Fuel",
+                           "Compared_Price"]
+
+        # Use the columns to create a umap of the cars
+        df_umap = filtered_df[predict_columns]
+
+        df_umap['Displacement_cm3'] = df_umap['Displacement_cm3'].fillna(0)
+
+        # Add the new car to the df
+        df_umap.loc[1000000] = [year, kilometers, displacement_cm3, power_hp, gear_type, condition, fuel, compared_price]
+
+        # Convert the gear type and condition to lowercase
+        df_umap["Gear_Type"] = df_umap["Gear_Type"].str.lower()
+        df_umap["Condition"] = df_umap["Condition"].str.lower()
+        df_umap["Fuel"] = df_umap["Fuel"].str.lower()
+
+        # Convert the categorical columns to numerical
+        df_umap = pd.get_dummies(df_umap, columns=["Gear_Type", "Fuel", "Condition", "Compared_Price"],
+                                 drop_first=True)
+
+        # Create the umap
+        reducer = umap.UMAP(n_jobs=-1)
+        embedding = reducer.fit_transform(df_umap)
+
+        # Get the umap embedding of the new car
+        new_car_embedding = embedding[-1]
+
+
         # Fit the NearestNeighbors model
         model_knn = NearestNeighbors(n_neighbors=6,
                                      algorithm='ball_tree')  # n_neighbors is 6 because the car itself is included
@@ -94,7 +95,7 @@ def predict_price(brand: str,
         avg_price = int(round(avg_price, -3))
         return f'A car with those specifications is worth around {avg_price}€. Let me know if you need anything else. 😉'
 
-    except TypeError:
+    except Exception as e:
         return "We don't have enough data to make a prediction. Sorry for any inconvenience."
 
 
