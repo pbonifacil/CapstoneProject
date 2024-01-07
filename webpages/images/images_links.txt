@@ -9,6 +9,9 @@ https://mir-s3-cdn-cf.behance.net/project_modules/max_1200/bfe0a770744351.5bad3c
 https://media2.giphy.com/media/VOBcjrSGd3Vv40imHG/giphy.gif
 https://media0.giphy.com/media/aOOdD40c3t9J85HJzZ/source.gif
 
+blog:
+https://media0.giphy.com/media/ooYUlJtxYZabmgzf6P/giphy.gif
+
 policies:
 https://media4.giphy.com/media/eh177GCq0nmFTC9aQc/200w.gif?cid=82a1493b62ru62n0j6ocggfqsg2j80pnnrc49l3wyuqnbjjz&ep=v1_gifs_related&rid=200w.gif&ct=s
 
