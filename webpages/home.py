@@ -4,13 +4,16 @@ def app():
     st.caption('🏠 | Home Page')
     st.write('---')
 
-    st.image(r"https://github.com/el-Migu-el/CapstoneProject/blob/main/webpages/images/horizontal_logo.png?raw=true", width=400)
-
-    '''
-    st.subheader('Steering toward your dream car!')'''
-    st.write('*AutoMentor is more than just a technology company, it is your personal assistant in the world of cars.*')
+    col1, col2, col3 = st.columns(3)
+    with col1:
+        st.write('')
+    with col2:
+        st.image(r"https://github.com/el-Migu-el/CapstoneProject/blob/main/webpages/images/horizontal_logo.png?raw=true", width=550)  
+    with col3:
+        st.write('')
 
     st.write('---')
+
 
     st.write('**Welcome to AutoMentor, where convenience meets customization in car shopping.**')
     st.write('''As a car buyer, you can effortlessly input your desired features and preferences, and our innovative Chatbot will instantly curate the most suitable options for you.
@@ -48,12 +51,11 @@ def app():
         st.write('')
     
 
+    st.write('*AutoMentor is more than just a technology company, it is your personal assistant in the world of cars.*')
     st.write('**What are you waiting for?**')
     st.write('**Create your account and start using AutoMentor!**')
     st.image(r"https://media0.giphy.com/media/aOOdD40c3t9J85HJzZ/source.gif", width = 250)
 
 
     st.write("---")
-    st.caption("© 2024 AutoMentor | All rights reserved")
-
-    
+    st.caption("© 2024 AutoMentor | All rights reserved") 
