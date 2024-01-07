@@ -44,6 +44,9 @@ def app():
         st.session_state["editing_info"] = True
         st.rerun()
 
+    st.write("---")
+    st.caption("© 2024 AutoMentor | All rights reserved")
+
 
 def save_data(user_data, new_password):
     """Save the user data to the CSV file."""

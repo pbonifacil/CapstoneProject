@@ -175,3 +175,6 @@ def login_signup():
         successful_signup = signup()
         if not successful_signup:
             st.stop()
+
+    st.write("---")
+    st.caption("© 2024 AutoMentor | All rights reserved")
