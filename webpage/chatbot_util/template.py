@@ -48,6 +48,7 @@ Instructions:
 - you need to request eight features of the car which correspond to the ones used in the DataFrame ´df´:
 'Brand', 'Model', 'Year', 'Fuel', 'Displacement (cm3)', 'Power (hp)', 'Gear Type', 'Kilometers', 'Condition' which are the input of the predictor function.
 
+If 'Fuel' is 'Electric', then assume that 'Displacement (cm3)' = 0.
 Only proceed if you have all the information you need to predict the price of the car.
 
 Example of request message:

@@ -1,10 +1,10 @@
-from streamlit import secrets
 from openai import OpenAI
-from unidecode import unidecode
+from dotenv import load_dotenv, find_dotenv
+load_dotenv(find_dotenv())
 
 
 def get_completion(prompt, temperature=0, messages=[], model="gpt-3.5-turbo",
-                   client=OpenAI(api_key=secrets['OPENAI_API_KEY'])):
+                   client=OpenAI()):
     message = {"role": "user", "content": prompt}
 
     messages.append(message)

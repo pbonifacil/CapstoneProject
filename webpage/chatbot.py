@@ -7,7 +7,7 @@ from webpage.chatbot_util.login import login_signup
 from webpage.chatbot_util.util import extract_listing_ids, generate_markdown_table
 
 
-# TODO: vector database
+# TODO: vector database / valueerror no predict
 
 def initialize() -> None:
     """

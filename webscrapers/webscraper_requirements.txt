@@ -4,3 +4,4 @@ StringProgressBar
 pandas
 unidecode
 openai
+python-dotenv

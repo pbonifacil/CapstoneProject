@@ -51,6 +51,8 @@ def predict_price(brand: str,
     # Use the columns to create a umap of the cars
     df_umap = filtered_df[predict_columns]
 
+    df_umap['Displacement_cm3'] = df_umap['Displacement_cm3'].fillna(0)
+
     # Add the new car to the df
     df_umap.loc[1000000] = [year, kilometers, displacement_cm3, power_hp, gear_type, condition, fuel, compared_price]
 
