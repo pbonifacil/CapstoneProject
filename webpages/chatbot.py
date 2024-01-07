@@ -7,8 +7,6 @@ from webpages.pages_util.login import login_signup
 from webpages.pages_util.util import extract_listing_ids, generate_markdown_table
 
 
-# TODO: vector database / valueerror no predict
-
 def initialize() -> None:
     """
     Initialize the app
