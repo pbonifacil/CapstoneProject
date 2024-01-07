@@ -4,8 +4,10 @@ def app():
     st.caption('🏠 | Home Page')
     st.write('---')
 
-    st.title('AutoMentor')
-    st.subheader('The ultimate guide to your dream car!')
+    st.image(r"https://github.com/el-Migu-el/CapstoneProject/blob/main/webpages/images/horizontal_logo.png?raw=true", width=400)
+
+    '''
+    st.subheader('Steering toward your dream car!')'''
     st.write('*AutoMentor is more than just a technology company, it is your personal assistant in the world of cars.*')
 
     st.write('---')
