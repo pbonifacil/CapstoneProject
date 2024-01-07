@@ -126,7 +126,7 @@ def display_assistant_msg(message: str):
                     if photo_df['Photo'][i] == 'Não disponível':
                         st.markdown(f"\n\n🚫 Photo not available\n\n\n{photo_df['Car'][i]}")
                         continue
-                    st.image(photo_df['Photo'][i], caption=photo_df['Car'][i], width=200)
+                    st.image(photo_df['Photo'][i], caption=photo_df['Car'][i], use_column_width="auto")
 
             st.markdown("")
             more_info = "If you would like more information about a particular car, please specify the corresponding car number 😊."
