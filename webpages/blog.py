@@ -11,28 +11,28 @@ def app():
         st.write(' ')
     
     if page == "Blog 1":
-        st.subheader('Blog Title')
-        st.write('Blog Text')
+        st.subheader("The Future of Car Shopping: A Dive into AutoMentor's Chatbot Technology")
+        st.write('Explore how AutoMentor is reshaping the car-buying experience with its cutting-edge Chatbot technology. Discuss the benefits of personalized recommendations and the impact on the future of automotive retail.')
     
 
     if page == "Blog 2":
-        st.subheader('Blog Title')
-        st.write('Blog Text')
+        st.subheader("Tech Enthusiast's Guide: Navigating the Automotive Landscape with AutoMentor")
+        st.write('Tailored for tech-savvy individuals, this post explores how AutoMentor caters to the preferences of those who appreciate innovation and efficiency in the car-buying process.')
 
 
     if page == "Blog 3":
-        st.subheader('Blog Title')
-        st.write('Blog Text')
+        st.subheader('Green Driving: Exploring Eco-Friendly Options with AutoMentor')
+        st.write("Highlight AutoMentor's commitment to sustainability by showcasing its recommendations for eco-friendly car options. Discuss the growing importance of environmentally conscious choices in the automotive industry.")
 
 
     if page == "Blog 4":
-        st.subheader('Blog Title')
-        st.write('Blog Text')
+        st.subheader("Mastering the Used Car Market: AutoMentor's Transparency Advantage")
+        st.write('Shed light on how AutoMentor addresses the challenges of the used car market by providing transparent information and reliable recommendations, making the process smoother for buyers.')
 
 
     if page == "Blog 5":
-        st.subheader('Blog Title')
-        st.write('Blog Text')
+        st.subheader("Empowering First-Time Buyers: AutoMentor's Guide to Confident Car Purchases")
+        st.write("Offer insights and tips for first-time car buyers, emphasizing how AutoMentor's user-friendly interface and personalized guidance simplify the decision-making process for those new to the world of car ownership.")
 
 
 
