@@ -34,8 +34,7 @@ def login():
             credentials[row['Username']] = row['Password']
             user_data[row['Username']] = {'Email': row['Email'], 'Username': row['Username'],
                                           'Full Name': row['Full Name'], 'Age': row['Age'],
-                                          'Location': row['Location'], 'Favorites': row['Favorites'],
-                                          'Bot Preferences': row['Bot Preferences']}
+                                          'Location': row['Location'], 'Bot Preferences': row['Bot Preferences']}
 
         return credentials, user_data
 

@@ -5,3 +5,5 @@ pandas
 unidecode
 openai
 python-dotenv
+random
+fdpf
