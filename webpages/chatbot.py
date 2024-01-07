@@ -2,9 +2,9 @@ import time
 import streamlit as st
 from langchain_core.messages import AIMessage
 
-from webpages.chatbot_util.agent import AutoMentorChatbot
-from webpages.chatbot_util.login import login_signup
-from webpages.chatbot_util.util import extract_listing_ids, generate_markdown_table
+from webpages.pages_util.agent import AutoMentorChatbot
+from webpages.pages_util.login import login_signup
+from webpages.pages_util.util import extract_listing_ids, generate_markdown_table
 
 
 # TODO: vector database / valueerror no predict

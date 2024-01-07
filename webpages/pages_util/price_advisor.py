@@ -9,7 +9,7 @@ from langchain.callbacks.manager import (
 )
 from langchain.pydantic_v1 import BaseModel, Field
 from langchain.tools import BaseTool
-from webpages.chatbot_util.util import DATASET_PATH
+from webpages.pages_util.util import DATASET_PATH
 
 # Ignore warnings
 warnings.filterwarnings("ignore")

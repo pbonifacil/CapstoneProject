@@ -12,9 +12,9 @@ from langchain.tools.convert_to_openai import format_tool_to_openai_function
 from langchain.agents.format_scratchpad import format_to_openai_function_messages
 from langchain.agents.output_parsers import OpenAIFunctionsAgentOutputParser
 
-from webpages.chatbot_util.template import TEMPLATE
-from webpages.chatbot_util.price_advisor import CustomPredictorTool
-from webpages.chatbot_util.util import DATASET_PATH
+from webpages.pages_util.template import TEMPLATE
+from webpages.pages_util.price_advisor import CustomPredictorTool
+from webpages.pages_util.util import DATASET_PATH
 
 
 class PythonInputs(BaseModel):
@@ -26,7 +26,7 @@ def get_chain(conversation_preferences='None'):
     pd.set_option("display.max_columns", 21)
 
     # embedding_model = OpenAIEmbeddings()
-    # vectorstore = FAISS.load_local("./chatbot_util/car_dataset_small", embedding_model) # 4 streamlit exec
+    # vectorstore = FAISS.load_local("./pages_util/car_dataset_small", embedding_model) # 4 streamlit exec
     # vectorstore = FAISS.load_local("car_dataset_small", embedding_model)
     # retriever_tool = create_retriever_tool(
     #   vectorstore.as_retriever(), "car_model_search", "Search for a car model by name"

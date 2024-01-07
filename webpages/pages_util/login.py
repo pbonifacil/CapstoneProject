@@ -3,7 +3,7 @@ import hmac
 import os
 from openai import OpenAI, AuthenticationError
 import pandas as pd
-from webpages.chatbot_util.util import CUSTOMER_DATA_PATH
+from webpages.pages_util.util import CUSTOMER_DATA_PATH
 
 
 def is_valid_api_key(api_key):
